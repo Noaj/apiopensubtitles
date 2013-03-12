@@ -1,0 +1,6 @@
+{
+    "name": "joan/api-open-subtitles",
+    "require": {
+        "zendframework/zend-xmlrpc": "2.1.3"
+    }
+}
