@@ -1,6 +1,7 @@
 <?php
 
-require_once('../Resources/curl.class.php');
+require __DIR__.'/../vendor/autoload.php';
+use Zend\XmlRpc\Client;
 
 /**
  * 
@@ -11,9 +12,9 @@ class xmlrpc_client {
 	
 	/**
 	 * Requested Url
-	 * @var unknown_type
+	 * @var string
 	 */
-    private $url;
+    private $url = 'http://api.opensubtitles.org/xml-rpc';
     
     /**
      * Method to use
@@ -22,38 +23,48 @@ class xmlrpc_client {
     private $methods;
     
     /**
-     * 
-     * @param $url
-     * @param $autoload
+     * XML-RPC Client
      */
-    function __construct($url, $autoload=true) {
+    private $client;
+    
+    /**
+     * This will login user
+     * @param string $username
+     * @param string $password
+     * @param string $language
+     * @param string $userAgent
+     */
+    function __construct($username, $password, $language, $userAgent) {
     	
-        $this->url = $url;
-        $this->connection = new curl();
-        $this->methods = array();
+        $this->client = new Zend\XmlRpc\Client($this->url);
+        $this->client->call('LogIn', array($username, $password, $language, $userAgent));
         
-        if ($autoload) {
-            $resp = $this->call('ServerInfo', null);
-            $this->methods = $resp;
-        }
-        
+        return $this->client;
+                    
     }
     
-    public function call($method, $params = null) {
+    /**
+     * This will logout user
+     * @param string $token
+     */
+    public function logOut($token) {
     	
-        $post = xmlrpc_encode_request($method, $params);
+        $this->client->call('LogOut', $token);
         
-        return xmlrpc_decode($this->connection->post($this->url, $post));
+        return $this->client;
     }       
     
+    /**
+     * Look for Subtitles
+     * @param string $token
+     * @param array $information
+     */
+    public function searchSubtitles($token, array $information) {
+    	
+    	$this->token = $token;
+    	$this->client->call('SearchSubtitles', $this->token, $information);
+    }
+    
+    
+    
 }
-
-	header('Content-Type: text/plain');
-	//die('Here');
-	$rpc = "http://api.opensubtitles.org/xml-rpc";
-
-	$client = new xmlrpc_client($rpc, true);
-	//var_dump($client); die('Here');
-
-	$resp = $client->call('ServerInfo', array());
-	print_r($resp);
