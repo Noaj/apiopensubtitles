@@ -34,6 +34,11 @@ class xmlrpc_client {
     private $token;
     
     /**
+     * Search qith query or ImdbId. Default Query.
+     */
+    private $query = 'query';
+    
+    /**
      * This will login user
      * @param string $username
      * @param string $password
@@ -77,15 +82,21 @@ class xmlrpc_client {
     /**
      * Look Subtitles for Tv shows
      * @param string $token
-     * @param array $information
+     * @param string $tvShowName
+     * @param int    $season
+     * @param int    $episode
+     * @param string $sublanguage
      */
-    public function searchTvShowSubtitles($token, array $information) {
+    public function searchTvShowSubtitles($token, $tvShowName, $season = null, $episode = null, $sublanguage = 'all' ) {
+    	
+    	$information = array($this->query => $tvShowName, 'season' => $season, 'episode' => $episode, 'sublanguageid'=> $sublanguage);
     	
     	try{
     		$this->token = $token;
-    		$this->client->call('SearchSubtitles', 
-    		array($this->token, array( 
-    		array('query' => 'south park', 'season' => 1, 'episode' => 1, 'sublanguageid'=>'eng'))));
+    		$result = $this->client->call('SearchSubtitles', 
+    		array($this->token, array($information)));
+    		
+    		return $result;
     		
     	}catch (HttpException $e) {
     		
@@ -98,16 +109,16 @@ class xmlrpc_client {
      * Look Subtitles for Movies
      * @param string $token
      * @param string $movieName
-     * @param string $languages
+     * @param string $languages The params could be: 'eng,esp' or 'eng'
      */
-    public function searchMovieSubtitles($token, $movieName, $languages) {
+    public function searchMovieSubtitles($token, $movieName, $sublanguage) {
     	
     	try{
     		
     		$this->token = $token;
     		$result = $this->client->call('SearchSubtitles', 
     		array($token, array(
-    		array('query' => $movieName, 'sublanguageid'=> $languages))));
+    		array($this->query => $movieName, 'sublanguageid'=> $sublanguage))));
     		
     		return $result;
     		
@@ -134,6 +145,16 @@ class xmlrpc_client {
     public function setToken($token){
     	
     	$this->token = $token;
+    	
+    }
+    
+    /**
+     * Set search method by query or imdbid. query by default
+     * @param string $query
+     */
+    public function setQuery($query){
+    	
+    	$this->query = $query;
     	
     }
        

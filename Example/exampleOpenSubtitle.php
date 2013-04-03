@@ -1,15 +1,23 @@
 <?php
 
 require __DIR__.'/../vendor/autoload.php';
-//use ApiOpenSubtitles\Client\xmlrpc_client;
+
 include_once('../Client/xmlrpc_client.php');
 include_once('../Client/apiMethodReturn.php');
 
-$client = new xmlrpc_client('theTester', 'gotapaximi', 'en', 'apiOpenSubtitles v0.1');//new xmlrpc_client('theTester', 'gotapaximi', 'en', "apiOpenSubtitles v0.1");
+//Te user name and password can be empty but the userAgent
+$username = '';
+$password = '';
+//As language use ​ISO639 2 letter code
+$language = 'en';
+//For test purposes special user agent
+$useragent = "OS Test User Agent";
 
-$result = $client->searchMovieSubtitles($client->getToken(), 'matrix', 'eng');
+$client = new xmlrpc_client($username, $password, $language, $useragent);
+$result = $client->searchTvShowSubtitles($client->getToken(), 'south park', null, null, 'eng');
 
 $returnMethod = new apiMethodReturn();
 $jsonData = $returnMethod->returnXml($result);
+
 var_dump($jsonData);
 
