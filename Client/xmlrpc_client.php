@@ -2,6 +2,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 use Zend\XmlRpc\Client;
+use Zend\XmlRpc\Client\Exception\HttpException;
 
 /**
  * 
@@ -28,6 +29,11 @@ class xmlrpc_client {
     private $client;
     
     /**
+     * XML-RPC Client Token
+     */
+    private $token;
+    
+    /**
      * This will login user
      * @param string $username
      * @param string $password
@@ -36,11 +42,18 @@ class xmlrpc_client {
      */
     function __construct($username, $password, $language, $userAgent) {
     	
-        $this->client = new Zend\XmlRpc\Client($this->url);
-        $this->client->call('LogIn', array($username, $password, $language, $userAgent));
-        
-        return $this->client;
-                    
+    	try {
+    		
+    		$this->client = new Client($this->url);
+        	$clientToken = $this->client->call('LogIn', array($username, $password, $language, $userAgent));
+        	$this->setToken($clientToken["token"]);
+        	return $this->client;
+    		
+    	}catch (HttpException $e) {
+    		
+     		$e->getCode();
+     		echo $e->getMessage();
+		 }                  
     }
     
     /**
@@ -49,22 +62,79 @@ class xmlrpc_client {
      */
     public function logOut($token) {
     	
-        $this->client->call('LogOut', $token);
+    	try{
+    		$this->client->call('LogOut', $token);
         
-        return $this->client;
+        	return $this->client;
+        	
+    	}catch (HttpException $e) {
+    		
+     		$e->getCode();
+     		echo $e->getMessage();
+		 }
     }       
     
     /**
-     * Look for Subtitles
+     * Look Subtitles for Tv shows
      * @param string $token
      * @param array $information
      */
-    public function searchSubtitles($token, array $information) {
+    public function searchTvShowSubtitles($token, array $information) {
     	
-    	$this->token = $token;
-    	$this->client->call('SearchSubtitles', $this->token, $information);
+    	try{
+    		$this->token = $token;
+    		$this->client->call('SearchSubtitles', 
+    		array($this->token, array( 
+    		array('query' => 'south park', 'season' => 1, 'episode' => 1, 'sublanguageid'=>'eng'))));
+    		
+    	}catch (HttpException $e) {
+    		
+     		$e->getCode();
+     		echo $e->getMessage();
+		 }
     }
     
+	/**
+     * Look Subtitles for Movies
+     * @param string $token
+     * @param string $movieName
+     * @param string $languages
+     */
+    public function searchMovieSubtitles($token, $movieName, $languages) {
+    	
+    	try{
+    		
+    		$this->token = $token;
+    		$result = $this->client->call('SearchSubtitles', 
+    		array($token, array(
+    		array('query' => $movieName, 'sublanguageid'=> $languages))));
+    		
+    		return $result;
+    		
+    	}catch (HttpException $e) {
+    		
+     		$e->getCode();
+     		echo $e->getMessage();
+		 }
+    }
     
+    /**
+     * Get xmlrpc_client token
+     */
+    public function getToken(){
+    	
+    	return $this->token;
+    	
+    }
     
+    /**
+     * Set xmlrpc_client token
+     * @param unknown_type $token
+     */
+    public function setToken($token){
+    	
+    	$this->token = $token;
+    	
+    }
+       
 }

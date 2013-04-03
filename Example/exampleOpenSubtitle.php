@@ -1,31 +1,15 @@
 <?php
 
-/**
- * 
- */
-//namespace ApiOpenSubtitles/Example;
-
 require __DIR__.'/../vendor/autoload.php';
-use Zend\XmlRpc\Client;
+//use ApiOpenSubtitles\Client\xmlrpc_client;
+include_once('../Client/xmlrpc_client.php');
+include_once('../Client/apiMethodReturn.php');
 
-$client = new Zend\XmlRpc\Client('http://api.opensubtitles.org/xml-rpc');
+$client = new xmlrpc_client('theTester', 'gotapaximi', 'en', 'apiOpenSubtitles v0.1');//new xmlrpc_client('theTester', 'gotapaximi', 'en', "apiOpenSubtitles v0.1");
 
-$username = '';
-$password = '';
-$language = 'en';
-$userAgent = "OS Test User Agent";
+$result = $client->searchMovieSubtitles($client->getToken(), 'matrix', 'eng');
 
-try {
+$returnMethod = new apiMethodReturn();
+$jsonData = $returnMethod->returnXml($result);
+var_dump($jsonData);
 
-    $token = $client->call('LogIn', array($username, $password, $language, $userAgent));
-	//var_dump($token["token"]);
-	$result = $client->call('SearchSubtitles', $token["token"], 
-	array('query' => 'south park', 'season' => 1, 'episode' => 1, 'sublanguageid'=>'all'));
-	//$result = $client->getLastResponse();
-	var_dump($result); 
-	
-} catch (Zend\XmlRpc\Client\Exception\HttpException $e) {
-
-     $e->getCode();// returns 404
-     echo $e->getMessage();// returns "Not Found"
-}
