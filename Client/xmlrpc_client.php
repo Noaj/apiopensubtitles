@@ -34,6 +34,11 @@ class xmlrpc_client {
     private $token;
     
     /**
+     * XML-RPC Client status
+     */
+    private $status;
+    
+    /**
      * Search qith query or ImdbId. Default Query.
      */
     private $query = 'query';
@@ -52,6 +57,7 @@ class xmlrpc_client {
     		$this->client = new Client($this->url);
         	$clientToken = $this->client->call('LogIn', array($username, $password, $language, $userAgent));
         	$this->setToken($clientToken["token"]);
+        	$this->setStatus($clientToken["status"]);
         	return $this->client;
     		
     	}catch (HttpException $e) {
@@ -129,6 +135,23 @@ class xmlrpc_client {
 		 }
     }
     
+	/**
+     * This simple function returns basic server info
+     */
+    public function serverInfo() {
+    	
+    	try{
+    		$this->client->call('ServerInfo');
+        
+        	return $this->client;
+        	
+    	}catch (HttpException $e) {
+    		
+     		$e->getCode();
+     		echo $e->getMessage();
+		 }
+    }
+    
     /**
      * Get xmlrpc_client token
      */
@@ -155,6 +178,25 @@ class xmlrpc_client {
     public function setQuery($query){
     	
     	$this->query = $query;
+    	
+    }
+    
+	/**
+     * Set client status
+     * @param string $query
+     */
+    public function setStatus($status){
+    	
+    	$this->status = $status;
+    	
+    }
+    
+	/**
+     * Get client status
+     */
+    public function getStatus(){
+    	
+    	return $this->status;
     	
     }
        
