@@ -1,7 +1,7 @@
 <?php
 
 
-include_once('../Client/xmlrpc_client.php');
+include_once('../Client/xmlrpcClient.php');
 include_once('../Client/apiMethodReturn.php');
 require_once 'PHPUnit/Framework/TestCase.php';
 
