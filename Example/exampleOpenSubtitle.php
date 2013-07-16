@@ -2,7 +2,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-include_once('../Client/xmlrpc_client.php');
+include_once('../Client/xmlrpcClient.php');
 include_once('../Client/apiMethodReturn.php');
 
 //Te user name and password can be empty but the userAgent
