@@ -1,6 +1,6 @@
 <?php
 
-namespace Noaj\Tool\OpenSubtitles\Tests;
+namespace Noaj\Tools\OpenSubtitles\Tests;
 
 use Noaj\Tool\OpenSubtitles\Client;
 //include_once('../Client/xmlrpcClient.php');

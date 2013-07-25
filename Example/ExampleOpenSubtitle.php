@@ -1,6 +1,6 @@
 <?php
 
-namespace Noaj\Tool\OpenSubtitles\Example;
+namespace Noaj\Tools\OpenSubtitles\Example;
 require __DIR__.'/../vendor/autoload.php';
 
 use Noaj\Tool\OpenSubtitles\Client\XmlrpcClient;
@@ -19,7 +19,7 @@ $language = 'en';
 $useragent = "OS Test User Agent";
 //var_dump("Here2");
 $client = new XmlrpcClient($username, $password, $language, $useragent);
-var_dump($client);
+
 $result = $client->searchTvShowSubtitles($client->getToken(), 'south park', null, null, 'eng');
 
 $returnMethod = new XmlrpcReturn();

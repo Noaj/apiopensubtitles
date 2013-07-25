@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Noaj\Tool\OpenSubtitles\Client;
+namespace Noaj\Tools\OpenSubtitles\Client;
 
 
 require __DIR__.'/../vendor/autoload.php';
