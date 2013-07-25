@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Noaj\Tools\OpenSubtitles\Client;
+namespace Noaj\Tools\OpenSubtitles\Client\XmlrpcClient;
 
 include 'xmlrpc.inc';
 /**
@@ -20,7 +20,7 @@ class OpenSubtitleClass{
 	 */
 	public function getSubtitle()
 	{
-		$request = xmlrpc_client();
+		$request = XmlrpcClient();
 
 	}
 }

@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'Zend\\' => array($vendorDir . '/zendframework/zendframework/library'),
     'ZendTest\\' => array($vendorDir . '/zendframework/zendframework/tests'),
+    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Noaj\\Tools\\OpenSubtitles' => array($baseDir . '/'),
 );

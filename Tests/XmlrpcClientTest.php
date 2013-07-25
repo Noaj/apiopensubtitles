@@ -2,14 +2,11 @@
 
 namespace Noaj\Tools\OpenSubtitles\Tests;
 
-use Noaj\Tool\OpenSubtitles\Client;
-//include_once('../Client/xmlrpcClient.php');
-//include_once('../Client/apiMethodReturn.php');
-//require_once 'PHPUnit/Framework/TestCase.php';
+use Noaj\Tools\OpenSubtitles\Client\XmlrpcClient;
+use Noaj\Tools\OpenSubtitles\Client\XmlrpcReturn;
 
 
-class XmlrpcClientTest extends PHPUnit_Framework_TestCase
-{
+class XmlrpcClientTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * 
 	 * @var string $token
@@ -63,8 +60,8 @@ class XmlrpcClientTest extends PHPUnit_Framework_TestCase
 	 */
 	public function setUp()
 	{
-		$this->client = new xmlrpc_client($this->username, $this->password, $this->language, $this->userAgent);
-		$this->returnMethod = new apiMethodReturn();
+		$this->client = new XmlrpcClient($this->username, $this->password, $this->language, $this->userAgent);
+		$this->returnMethod = new XmlrpcReturn();
 		
 	}
 	

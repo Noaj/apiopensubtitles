@@ -3,7 +3,6 @@
 
 namespace Noaj\Tools\OpenSubtitles\Client;
 
-
 require __DIR__.'/../vendor/autoload.php';
 use Zend\XmlRpc\Client;
 use Zend\XmlRpc\Client\Exception\HttpException;
@@ -58,7 +57,7 @@ class XmlrpcClient {
     {
     	
     	try {
-                var_dump("Here");
+
             $this->client = new Client($this->url);
             $clientToken = $this->client->call('LogIn', array($username, $password, $language, $userAgent));
             $this->setToken($clientToken["token"]);

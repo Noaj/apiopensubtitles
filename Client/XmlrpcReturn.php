@@ -3,6 +3,7 @@
 
 namespace Noaj\Tools\OpenSubtitles\Client;
 
+use \SimpleXMLElement;
 
 /**
  * 
@@ -15,8 +16,8 @@ class XmlrpcReturn {
 	 * Return Json Data
 	 * @param array $data
 	 */
-	public function returnJson(array $data){
-		
+	public function returnJson(array $data)
+        {	
 		$jsonData = json_encode($data);
 		
 		return $jsonData;
@@ -26,8 +27,8 @@ class XmlrpcReturn {
 	 * Return xml data
 	 * @param array $data
 	 */
-	public function returnXml(array $data){
-		
+	public function returnXml(array $data)
+        {	
 		$xmlData = new SimpleXMLElement("<?xml version=\"1.0\"?><subtitleResult></subtitleResult>");
 
 		$this->arrayToXml($data, $xmlData);
@@ -52,6 +53,7 @@ class XmlrpcReturn {
                 
                         $subnode = $xmlData->addChild("$key");
                 	$this->arrayToXml($value, $subnode);
+                        
                     }else {
                 	
                         $this->arrayToXml($value, $xmlData);
